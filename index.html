@@ -422,6 +422,37 @@
       resize: vertical;
       min-height: 90px;
     }
+    /* ── Lightbox ── */
+    .lightbox {
+      position: fixed; inset: 0;
+      background: rgba(10, 30, 14, 0.92);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 300;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+    .lightbox.open { opacity: 1; pointer-events: auto; }
+    .lightbox img {
+      max-width: 92vw; max-height: 90vh;
+      border-radius: 0.8rem;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      transform: scale(0.9);
+      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+      object-fit: contain;
+    }
+    .lightbox.open img { transform: scale(1); }
+    .lightbox-close {
+      position: absolute; top: 1.2rem; right: 1.4rem;
+      background: rgba(255,255,255,0.12);
+      border: none; color: #fff;
+      font-size: 1.6rem; line-height: 1;
+      width: 2.4rem; height: 2.4rem;
+      border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,0.28); }
+
     .btn-send {
       width: 100%;
       margin-top: 0.5rem;
@@ -613,6 +644,12 @@
     </div>
   </div>
 
+  <!-- ── Lightbox ── -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">&#10005;</button>
+    <img id="lightboxImg" src="" alt="" />
+  </div>
+
   <script>
     /* ── Navigare ecrane ── */
     function goTo(n) {
@@ -639,6 +676,26 @@
         btn.classList.remove('playing');
       }
     }
+
+    /* ── Lightbox ── */
+    function openLightbox(src) {
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightbox').classList.add('open');
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
+    // Atașează click pe toate imaginile din ecranul 2
+    document.querySelectorAll('#screen2 img').forEach(function(img) {
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', function(e) {
+        e.stopPropagation();
+        openLightbox(this.src);
+      });
+    });
 
     /* ── Modal contact ── */
     function openModal()  { document.getElementById('modalOverlay').classList.add('open'); }
