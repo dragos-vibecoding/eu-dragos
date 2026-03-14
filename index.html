@@ -263,6 +263,13 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 3px;
       padding: 6px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease, padding 0.3s ease;
+    }
+    .card-images-grid.open {
+      max-height: 600px;
+      padding: 6px;
     }
     .card-images-grid img {
       width: 100%; aspect-ratio: 1;
@@ -287,11 +294,18 @@
       border-bottom: 1px solid rgba(126,200,138,0.35);
     }
     .card-poem-body {
-      padding: 1rem 1.3rem 1.1rem;
       font-size: clamp(0.9rem, 1.5vw, 1.15rem);
       color: #2a5e32;
       line-height: 1.85;
       font-style: italic;
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 1.3rem;
+      transition: max-height 0.5s ease, padding 0.3s ease;
+    }
+    .card-poem-body.open {
+      max-height: 300px;
+      padding: 1rem 1.3rem 1.1rem;
     }
     .card-poem-body p { margin: 0; }
 
@@ -563,7 +577,7 @@
         <!-- Caseta IMAGINILE MELE PENTRU TINE -->
         <div class="card card-images">
           <div class="card-images-header">Imaginile Mele Pentru Tine</div>
-          <div class="card-images-grid">
+          <div class="card-images-grid" id="imagesGrid">
             <img src="fotografii/62.jpg"          alt=""/>
             <img src="fotografii/DSC_0039a.jpg"   alt=""/>
             <img src="fotografii/DSC_0305.jpg"    alt=""/>
@@ -572,7 +586,7 @@
             <img src="fotografii/DSC_0744a.jpg"   alt=""/>
           </div>
           <div class="card-footer">
-            <button class="btn-vezi">Vezi mai mult</button>
+            <button class="btn-vezi" id="btnImagini" onclick="toggleSection('imagesGrid','btnImagini','Vezi mai mult','Inchide')">Vezi mai mult</button>
           </div>
         </div>
 
@@ -594,14 +608,14 @@
         <!-- Caseta POVESTILE MELE PENTRU TINE -->
         <div class="card card-poem">
           <div class="card-poem-header">Povestile Mele Pentru Tine</div>
-          <div class="card-poem-body">
+          <div class="card-poem-body" id="poemBody">
             <p>Ramai, te rog, cu mine-n seara asta,</p>
             <p>Cand doar ploaia mai vine pe la mine,</p>
             <p>Ramai, caci iti promit c-o sa inchid fereastra</p>
             <p>Si ca ma voi gandi numai la tine.</p>
           </div>
           <div class="card-footer">
-            <button class="btn-vezi">Mai mult</button>
+            <button class="btn-vezi" id="btnPoem" onclick="toggleSection('poemBody','btnPoem','Mai mult','Inchide')">Mai mult</button>
           </div>
         </div>
 
@@ -696,6 +710,14 @@
         openLightbox(this.src);
       });
     });
+
+    /* ── Toggle secțiuni ── */
+    function toggleSection(contentId, btnId, labelOpen, labelClose) {
+      var el  = document.getElementById(contentId);
+      var btn = document.getElementById(btnId);
+      var isOpen = el.classList.toggle('open');
+      btn.textContent = isOpen ? labelClose : labelOpen;
+    }
 
     /* ── Modal contact ── */
     function openModal()  { document.getElementById('modalOverlay').classList.add('open'); }
