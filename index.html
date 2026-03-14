@@ -103,35 +103,42 @@
       transform: scale(1.05);
     }
 
-    /* Avatar */
-    .avatar-wrap {
+    /* Avatar – container estetic (fără mască, gestionează poziția și popup-ul) */
+    .avatar-outer {
       position: absolute;
       right: 8%; top: 50%;
       transform: translateY(-50%) scale(0.6);
       width: clamp(200px, 24vw, 380px);
-      aspect-ratio: 9/16;
-      -webkit-mask-image: radial-gradient(ellipse 78% 82% at 50% 50%, black 38%, rgba(0,0,0,0.85) 52%, rgba(0,0,0,0.45) 68%, transparent 100%);
-      mask-image: radial-gradient(ellipse 78% 82% at 50% 50%, black 38%, rgba(0,0,0,0.85) 52%, rgba(0,0,0,0.45) 68%, transparent 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       opacity: 0;
       pointer-events: none;
       transition: opacity 1s ease, transform 0.8s cubic-bezier(0.34,1.56,0.64,1);
     }
-    .avatar-wrap.visible {
+    .avatar-outer.visible {
       opacity: 1;
       transform: translateY(-50%) scale(1);
       pointer-events: auto;
+    }
+
+    /* Zona video cu fade pe margini */
+    .avatar-wrap {
+      width: 100%;
+      aspect-ratio: 9/16;
+      -webkit-mask-image: radial-gradient(ellipse 78% 82% at 50% 50%, black 38%, rgba(0,0,0,0.85) 52%, rgba(0,0,0,0.45) 68%, transparent 100%);
+      mask-image: radial-gradient(ellipse 78% 82% at 50% 50%, black 38%, rgba(0,0,0,0.85) 52%, rgba(0,0,0,0.45) 68%, transparent 100%);
     }
     .avatar-wrap video {
       width: 100%; height: 100%;
       object-fit: cover;
       border-radius: 50% / 46%;
+      display: block;
     }
 
     /* Buton ASCULTA */
     .btn-asculta {
-      position: absolute;
-      bottom: -18%; left: 50%;
-      transform: translateX(-50%);
+      margin-top: 0.8rem;
       background: linear-gradient(135deg, #4caf6e, #2e7d4f);
       color: #fff;
       font-family: 'Kaushan Script', cursive;
@@ -146,22 +153,12 @@
     }
     .btn-asculta:hover {
       background: linear-gradient(135deg, #388e4f, #1b5e35);
-      transform: translateX(-50%) scale(1.07);
+      transform: scale(1.07);
       box-shadow: 0 6px 24px rgba(46,125,79,0.5);
     }
     .btn-asculta.playing {
       background: linear-gradient(135deg, #a5d6a7, #66bb6a);
       color: #1a4a22;
-    }
-
-    /* Glow avatar */
-    .avatar-glow {
-      position: absolute;
-      bottom: -8%; left: 50%;
-      transform: translateX(-50%);
-      width: 80%; height: 30%;
-      background: radial-gradient(ellipse, rgba(126,200,138,0.45) 0%, transparent 70%);
-      z-index: -1; pointer-events: none;
     }
 
     /* Floral */
@@ -499,11 +496,12 @@
     <button class="btn-next" onclick="goTo(2)">Descoperă &rarr;</button>
 
     <!-- Avatar video -->
-    <div class="avatar-wrap" id="avatar">
-      <video id="avatarVideo" loop playsinline>
-        <source src="avatar.mp4" type="video/mp4" />
-      </video>
-      <div class="avatar-glow"></div>
+    <div class="avatar-outer" id="avatar">
+      <div class="avatar-wrap">
+        <video id="avatarVideo" loop playsinline>
+          <source src="avatar.mp4" type="video/mp4" />
+        </video>
+      </div>
       <button class="btn-asculta" id="btnAsculta" onclick="togglePlay()">ASCULTA</button>
     </div>
 
